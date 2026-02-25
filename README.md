@@ -2,7 +2,7 @@
 
 
 
-Este proyecto implementa un \*\*agente conversacional técnico local\*\*, diseñado para funcionar como:
+Este proyecto implementa un agente conversacional técnico local, diseñado para funcionar como:
 
 
 
@@ -33,8 +33,6 @@ El agente está pensado como una pieza de infraestructura cognitiva que corre 10
 &nbsp; - Entornos híbridos Windows + WSL
 
 \- Mantener todo el flujo en local, sin depender de servicios externos.
-
-\- Servir como ejemplo de portfolio para empleadores y clientes.
 
 
 
