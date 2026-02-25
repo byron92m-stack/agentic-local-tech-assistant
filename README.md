@@ -1,62 +1,118 @@
-\# Agente Conversacional Técnico Local
+# Agente Conversacional Técnico Local
 
+El **Agente Conversacional Técnico Local** es un asistente especializado en arquitectura, troubleshooting y diseño de sistemas, diseñado para ejecutarse **100% en entorno local** (Windows + WSL) utilizando modelos LLM locales y una API propia.
 
+Este proyecto funciona como una pieza de **infraestructura cognitiva personal**, capaz de razonar sobre entornos técnicos reales sin depender de servicios externos.
 
-Este proyecto implementa un agente conversacional técnico local, diseñado para funcionar como:
+---
 
+## 🚀 Objetivos del proyecto
 
+- Proveer un agente técnico capaz de razonar sobre:
+  - Arquitectura de sistemas  
+  - Pipelines de datos  
+  - Entornos híbridos Windows + WSL  
+  - Troubleshooting y debugging  
+- Mantener todo el flujo en **local**, sin enviar datos a la nube.  
+- Servir como base para un sistema **multi-agente** en el futuro.  
+- Documentar el diseño cognitivo y técnico de forma clara y profesional.
 
-\- Asistente de arquitectura
+---
 
-\- Consultor técnico
+## 🧠 Arquitectura general
 
-\- Soporte para debugging y diseño de sistemas
+El agente está compuesto por:
 
-\- Interfaz cognitiva para entornos locales (Windows + WSL)
+- **API local (FastAPI)**  
+- **Backend LLM local (Ollama u otro)**  
+- **Módulo de prompts** con roles internos:
+  - Orchestrator  
+  - Validator  
+- **Documentación técnica** (arquitectura, API, roadmap, ejemplos)
 
+La arquitectura completa se detalla en `docs/architecture.md`.
 
+---
 
-El agente está pensado como una pieza de infraestructura cognitiva que corre 100% en local, usando modelos LLM locales y una API propia.
+## 📂 Estructura del repositorio
 
+```
+agent/
+  api/
+    main.py
+  prompts/
+    system_prompt.md
 
+docs/
+  README.md
+  api.md
+  architecture.md
+  roadmap.md
+  examples.md (pendiente)
 
-\## Objetivos
+README.md
+requirements.txt
+```
 
+---
 
+## 🛠️ Tecnologías utilizadas
 
-\- Proveer un agente técnico capaz de razonar sobre:
+- Python  
+- FastAPI  
+- Uvicorn  
+- LLM local (Ollama u otro backend)  
+- WSL2 (Ubuntu)  
 
-&nbsp; - Arquitectura de sistemas
+---
 
-&nbsp; - Pipelines de datos
+## ▶️ Ejecución local (modo desarrollo)
 
-&nbsp; - Entornos híbridos Windows + WSL
+1. Instalar dependencias:
 
-\- Mantener todo el flujo en local, sin depender de servicios externos.
+```bash
+pip install -r requirements.txt
+```
 
+2. Ejecutar la API:
 
+```bash
+uvicorn agent.api.main:app --reload
+```
 
-\## Tecnologías
+3. Probar el endpoint de salud:
 
+```
+http://127.0.0.1:8000/health
+```
 
+---
 
-\- Python
+## 📌 Estado actual
 
-\- FastAPI
+El proyecto se encuentra en la **Fase 1 completada**:
 
-\- Uvicorn
+- Estructura base  
+- API mínima  
+- System prompt inicial  
+- Documentación técnica  
+- Roadmap definido  
 
-\- LLM local (Ollama u otro backend)
+Las próximas fases incluyen:
 
-\- WSL2 (Ubuntu)
+- Integración con Ollama  
+- Herramientas locales (FS, shell seguro, análisis de logs)  
+- Interfaz web  
+- Sistema multi-agente  
 
+Más detalles en `docs/roadmap.md`.
 
+---
 
-\## Estado actual
+## 📄 Licencia
 
+Proyecto personal — uso libre para revisión técnica y portfolio.
 
+---
 
-Este repositorio documenta la arquitectura, los prompts y la estructura del agente.  
-
-El foco inicial está en la claridad arquitectónica y la documentación, más que en el despliegue completo.
-
+Este repositorio evolucionará a medida que el agente crezca.
