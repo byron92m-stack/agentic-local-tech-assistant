@@ -1,2 +1,7 @@
 fastapi
-uvicorn
+uvicorn[standard]
+pydantic
+requests
+python-dotenv
+rich
+psutil

@@ -1,167 +1,93 @@
-# Arquitectura del Agente Técnico Local
+# System Architecture — Local Technical Agent
 
-Este documento describe la arquitectura del **Agente Conversacional Técnico Local**, un sistema modular diseñado para operar 100% en entorno local (Windows + WSL), utilizando modelos LLM locales, prompts estructurados y una API propia.
-
----
-
-## 1. Visión general
-
-El agente está diseñado para:
-
-- Ejecutarse completamente en hardware local  
-- Mantener seguridad y privacidad total  
-- Ser modular, extensible y fácil de depurar  
-- Integrarse con herramientas locales (filesystem, shell, logs, etc.)  
-- Servir como asistente técnico especializado en arquitectura, ML, DevOps y troubleshooting  
-
-La arquitectura combina:
-
-- **API local (FastAPI)**
-- **Backend LLM local (Ollama u otro)**
-- **Módulo de prompts con roles internos**
-- **Documentación técnica y cognitiva**
-- **Futuras herramientas locales (FS, shell, análisis)**
+This document describes the architecture of the **Local Technical Agent**, a modular system designed to run entirely on local hardware (Windows + WSL), using local LLM models, structured prompts, and a clean API layer.
 
 ---
 
-## 2. Componentes principales
+## 1. Overview
 
-### 2.1. API (FastAPI)
-- Expone endpoints locales.
-- Permite integrar el agente con herramientas externas.
-- Facilita pruebas, automatización y extensibilidad.
-- Actúa como capa de seguridad y validación.
+The Local Technical Agent is built with the following goals:
 
-### 2.2. Backend LLM (Ollama u otro)
-- Ejecuta el modelo local.
-- No depende de servicios externos.
-- Permite razonamiento seguro y reproducible.
-- Aísla la lógica cognitiva del resto del sistema.
+- 100% local execution  
+- Full privacy and security  
+- Modular and maintainable architecture  
+- Clear cognitive structure (Orchestrator → Validator)  
+- Easy debugging and extension  
+- Integration with local tools (filesystem, shell, logs)  
 
-### 2.3. Módulo de Prompts
-Define el comportamiento del agente mediante:
+The system combines:
 
-- **System prompt**
-- **Orchestrator** → propone plan
-- **Validator** → revisa coherencia
-- Reglas de interacción
-- Formato de respuesta
-
-### 2.4. Documentación
-Incluye:
-
-- Arquitectura
-- API
-- Roadmap
-- Ejemplos
-- Diseño cognitivo
-
-Permite que un empleador entienda el proyecto sin leer código.
+- **FastAPI** as the local API layer  
+- **Ollama** as the local LLM backend  
+- **Structured prompts** defining cognitive behavior  
+- **Documentation** for employers and clients  
+- **Future tools** (safe filesystem access, shell, log analysis)
 
 ---
 
-## 3. Flujo de ejecución
+## 2. Main Components
 
-1. El usuario envía una consulta a la API.  
-2. La API construye el contexto (system prompt + mensaje del usuario).  
-3. El backend LLM procesa la solicitud.  
-4. El agente aplica:
-   - **Orchestrator** → propone plan  
-   - **Validator** → revisa coherencia  
-5. La respuesta final se devuelve al usuario.
+### 2.1. API Layer (FastAPI)
+- Exposes local endpoints  
+- Handles requests and validation  
+- Provides a clean interface for external tools  
+- Ensures separation between UI and cognitive logic  
+
+### 2.2. Local LLM Backend (Ollama)
+- Executes the language model locally  
+- No external dependencies  
+- Deterministic and reproducible  
+- Isolated from the API layer  
+
+### 2.3. Prompt Module
+Defines the agent’s cognitive behavior:
+
+- **System prompt**  
+- **Orchestrator** (planning)  
+- **Validator** (review and correction)  
+- Response formatting rules  
+
+### 2.4. Documentation Layer
+Includes:
+
+- Architecture  
+- API specification  
+- Roadmap  
+- Examples  
+- Cognitive design  
+
+This allows employers to understand the system without reading code.
 
 ---
 
-## 4. Diagrama de arquitectura general (ASCII)
+## 3. Execution Flow
+
+1. The user sends a request to the API.  
+2. The API builds the full prompt (system + user).  
+3. The LLM processes the request.  
+4. The agent applies:  
+   - **Orchestrator** → proposes a plan  
+   - **Validator** → reviews and corrects  
+5. The final answer is returned to the user.
+
+---
+
+## 4. High-Level Architecture Diagram
 
 ```
                 ┌──────────────────────────┐
-                │        Usuario           │
+                │          User            │
                 └─────────────┬────────────┘
                               │
                               ▼
                     ┌──────────────────┐
-                    │      API         │
-                    │   (FastAPI)      │
+                    │       API        │
+                    │    (FastAPI)     │
                     └─────────┬────────┘
                               │
                               ▼
                 ┌──────────────────────────┐
-                │   Módulo de Prompts      │
-                │  - System prompt         │
-                │  - Orchestrator          │
-                │  - Validator             │
-                └─────────────┬────────────┘
-                              │
-                              ▼
-                    ┌──────────────────┐
-                    │   LLM Local      │
-                    │    (Ollama)      │
-                    └─────────┬────────┘
-                              │
-                              ▼
-                ┌──────────────────────────┐
-                │   Herramientas futuras   │
-                │  - FS seguro             │
-                │  - Shell whitelisted     │
-                │  - Análisis de logs      │
-                └──────────────────────────┘
-```
-
----
-
-## 5. Diagrama del flujo cognitivo (Orchestrator → Validator)
-
-```
-                ┌──────────────────────────┐
-                │        Usuario           │
-                └─────────────┬────────────┘
-                              │
-                              ▼
-                    ┌──────────────────┐
-                    │   Mensaje User   │
-                    └─────────┬────────┘
-                              │
-                              ▼
-                ┌──────────────────────────┐
-                │      Orchestrator        │
-                │  - Propone plan          │
-                │  - Descompone pasos      │
-                │  - Identifica riesgos    │
-                └─────────────┬────────────┘
-                              │
-                              ▼
-                ┌──────────────────────────┐
-                │        Validator         │
-                │  - Revisa coherencia     │
-                │  - Ajusta el plan        │
-                │  - Garantiza claridad    │
-                └─────────────┬────────────┘
-                              │
-                              ▼
-                    ┌──────────────────┐
-                    │ Respuesta Final  │
-                    └──────────────────┘
-```
-
----
-
-## 6. Diagrama del flujo API → LLM
-
-```
-                ┌──────────────────────────┐
-                │        Usuario           │
-                └─────────────┬────────────┘
-                              │
-                              ▼
-                    ┌──────────────────┐
-                    │   API (FastAPI)  │
-                    │  /chat (futuro)  │
-                    └─────────┬────────┘
-                              │
-                              ▼
-                ┌──────────────────────────┐
-                │   Módulo de Prompts      │
+                │     Prompt Module        │
                 │  - System Prompt         │
                 │  - Orchestrator          │
                 │  - Validator             │
@@ -169,25 +95,98 @@ Permite que un empleador entienda el proyecto sin leer código.
                               │
                               ▼
                     ┌──────────────────┐
-                    │   LLM Local      │
-                    │    (Ollama)      │
+                    │    Local LLM     │
+                    │     (Ollama)     │
                     └─────────┬────────┘
                               │
                               ▼
                 ┌──────────────────────────┐
-                │  Respuesta generada por  │
-                │         el LLM           │
+                │   Future Local Tools     │
+                │  - Safe FS Access        │
+                │  - Whitelisted Shell     │
+                │  - Log Analysis          │
+                └──────────────────────────┘
+```
+
+---
+
+## 5. Cognitive Flow Diagram (Orchestrator → Validator)
+
+```
+                ┌──────────────────────────┐
+                │          User            │
                 └─────────────┬────────────┘
                               │
                               ▼
                     ┌──────────────────┐
-                    │  API → Usuario   │
+                    │   User Message   │
+                    └─────────┬────────┘
+                              │
+                              ▼
+                ┌──────────────────────────┐
+                │       Orchestrator       │
+                │  - Proposes a plan       │
+                │  - Breaks down steps     │
+                │  - Identifies risks      │
+                └─────────────┬────────────┘
+                              │
+                              ▼
+                ┌──────────────────────────┐
+                │        Validator         │
+                │  - Reviews coherence     │
+                │  - Fixes inconsistencies │
+                │  - Ensures clarity       │
+                └─────────────┬────────────┘
+                              │
+                              ▼
+                    ┌──────────────────┐
+                    │   Final Answer   │
                     └──────────────────┘
 ```
 
 ---
 
-## 7. Diagrama de interacción Windows ↔ WSL ↔ Ollama
+## 6. API → LLM Flow Diagram
+
+```
+                ┌──────────────────────────┐
+                │          User            │
+                └─────────────┬────────────┘
+                              │
+                              ▼
+                    ┌──────────────────┐
+                    │   API (FastAPI)  │
+                    │   /chat endpoint │
+                    └─────────┬────────┘
+                              │
+                              ▼
+                ┌──────────────────────────┐
+                │     Prompt Module        │
+                │  - System Prompt         │
+                │  - Orchestrator          │
+                │  - Validator             │
+                └─────────────┬────────────┘
+                              │
+                              ▼
+                    ┌──────────────────┐
+                    │    Local LLM     │
+                    │     (Ollama)     │
+                    └─────────┬────────┘
+                              │
+                              ▼
+                ┌──────────────────────────┐
+                │   Generated Response     │
+                └─────────────┬────────────┘
+                              │
+                              ▼
+                    ┌──────────────────┐
+                    │   API → User     │
+                    └──────────────────┘
+```
+
+---
+
+## 7. Windows ↔ WSL ↔ Ollama Interaction Diagram
 
 ```
                    ┌──────────────────────────┐
@@ -197,54 +196,54 @@ Permite que un empleador entienda el proyecto sin leer código.
                    │  - Git                   │
                    └─────────────┬────────────┘
                                  │
-                                 │ Llamadas locales
+                                 │ Local calls
                                  ▼
                    ┌──────────────────────────┐
                    │          WSL2            │
                    │  Ubuntu Linux            │
                    │  - API (FastAPI)         │
-                   │  - Código del agente     │
+                   │  - Agent Code            │
                    │  - Prompts               │
                    └─────────────┬────────────┘
                                  │
-                                 │ Llamadas al modelo
+                                 │ LLM requests
                                  ▼
                    ┌──────────────────────────┐
                    │         Ollama           │
-                   │  - Modelos LLM locales   │
-                   │  - Ejecución aislada     │
+                   │  - Local LLM models      │
+                   │  - Isolated execution    │
                    └─────────────┬────────────┘
                                  │
                                  ▼
                    ┌──────────────────────────┐
-                   │   Respuesta generada     │
+                   │     Final Response       │
                    └──────────────────────────┘
 ```
 
 ---
 
-## 8. Principios de diseño
+## 8. Design Principles
 
-- **Modularidad**  
-- **Reproducibilidad**  
-- **Seguridad local**  
-- **Claridad cognitiva**  
-- **Extensibilidad futura**  
-- **Aislamiento entre capas**  
-- **Compatibilidad Windows + WSL**  
-
----
-
-## 9. Roadmap
-
-- Integración con Ollama  
-- Herramientas locales (filesystem, shell seguro, análisis de logs)  
-- Agentes secundarios  
-- Interfaz web  
-- Pruebas automatizadas  
-- Streaming de respuestas  
-- Autenticación local  
+- **Modularity**  
+- **Reproducibility**  
+- **Local security**  
+- **Cognitive clarity**  
+- **Future extensibility**  
+- **Layer isolation**  
+- **Windows + WSL compatibility**
 
 ---
 
-Este documento crecerá a medida que el proyecto evolucione.
+## 9. Roadmap Summary
+
+- Ollama integration  
+- Local tools (FS, shell, logs)  
+- Secondary agents  
+- Web interface  
+- Automated tests  
+- Streaming responses  
+- Local authentication  
+
+---
+
+This document will evolve as the project grows.
